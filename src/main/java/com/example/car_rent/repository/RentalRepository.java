@@ -11,11 +11,12 @@ import java.util.Set;
 @Repository
 public interface RentalRepository extends JpaRepository<Rental, String> {
     // Methods findAll(), findById(), save(), deleteById() fromJpaRepository.
+    Optional<Rental> findByVehicleId(String vehicleId);
     Optional<Rental> findByVehicleIdAndReturnDateIsNull(String vehicleId);
     Optional<Rental> findByVehicleIdAndUserIdAndReturnDateIsNull(String vehicleId, String userId);
     boolean existsByVehicleIdAndReturnDateIsNull(String vehicleId);
     boolean existsByVehicleIdAndReturnDateIsNotNull(String vehicleId);
-    boolean doesNotExistByVehicleId(String vehicleId);
+//    boolean doesNotExistByVehicleId(String vehicleId);
     @Query("SELECT r.vehicle.id FROM Rental r WHERE r.returnDate IS NULL")
     Set<String> findRentedVehicleIds();
 }

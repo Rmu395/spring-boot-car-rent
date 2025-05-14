@@ -15,5 +15,5 @@ public interface VehicleRepository extends JpaRepository<Vehicle, String> {
     Optional<Vehicle> findByIdAndIsActiveTrue(String id);
     List<Vehicle> findByIsActiveTrueAndIdNotIn(Set<String> rentedVehicleIds);
     List<Vehicle> findByIsActiveTrueAndIdIn(Set<String> rentedVehicleIds);
-    void setActiveFalseById(String id);
+//    void findByIdSetActiveFalse(String id);
 }

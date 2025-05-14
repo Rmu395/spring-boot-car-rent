@@ -14,6 +14,6 @@ public interface VehicleService {
     List<Vehicle> findRentedVehicles();
     boolean isAvailable(String vehicleId);
     //"it should be soft delete"
-    void deleteById(String id);
+    Optional<Vehicle> deleteById(String id);
 }
 

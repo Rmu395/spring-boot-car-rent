@@ -70,12 +70,18 @@ public class VehicleServiceImpl implements VehicleService {
     public boolean isAvailable(String vehicleId) {
         return vehicleRepository.findByIdAndIsActiveTrue(vehicleId).isPresent() &&
                 (rentalRepository.existsByVehicleIdAndReturnDateIsNotNull(vehicleId) ||
-                rentalRepository.doesNotExistByVehicleId(vehicleId));
+                rentalRepository.findByVehicleId(vehicleId).isEmpty());
     }
 
     @Override
     @Transactional
-    public void deleteById(String id) { // should be soft delete
-        vehicleRepository.setActiveFalseById(id);
+    public Optional<Vehicle> deleteById(String id) { // should be soft delete
+        Optional<Vehicle> toDelete = vehicleRepository.findById(id);
+        if (toDelete.isPresent()) {
+            toDelete.get().setActive(false);
+            return toDelete;
+        }
+        else return Optional.empty();
+//        toDelete.ifPresent(vehicle -> vehicle.setActive(false));
     }
 }

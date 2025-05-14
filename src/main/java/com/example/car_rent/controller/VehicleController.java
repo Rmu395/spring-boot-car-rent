@@ -1,5 +1,6 @@
 package com.example.car_rent.controller;
 
+import com.example.car_rent.dto.RentalRequest;
 import com.example.car_rent.model.Vehicle;
 import com.example.car_rent.service.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @RestController
@@ -40,11 +42,26 @@ public class VehicleController {
                 });
     }
 
-    @PostMapping
+    @PostMapping("/add")
     public ResponseEntity<Vehicle> addVehicle(@RequestBody Vehicle vehicle) {
         try {
             Vehicle savedVehicle = vehicleService.save(vehicle);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedVehicle);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @PostMapping("/remove")
+    public ResponseEntity<Vehicle> removeVehicle(@RequestBody RentalRequest rentalRequest) {
+        try {
+//            if (rentalRequest.userId.getRole == "Admin") {    // coś w tym stylu
+            Optional<Vehicle> removedVehicle = vehicleService.deleteById(rentalRequest.vehicleId);
+            if (removedVehicle.isPresent()) return ResponseEntity.status(HttpStatus.ACCEPTED).body(removedVehicle.get());
+            else return ResponseEntity.badRequest().build();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
